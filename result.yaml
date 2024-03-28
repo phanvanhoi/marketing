@@ -1,0 +1,170 @@
+openapi: 3.0.1
+info:
+  title: Emarket - Marketing HTTP API
+  description: The Marketing Service HTTP API
+  version: v1
+servers:
+  - url: /marketing-api
+paths:
+  /api/v1/exams:
+    get:
+      tags:
+        - Exams
+      operationId: "getExamsList"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExamsDTO"
+    post:
+      tags:
+        - Exams
+      operationId: "postExams"
+      description: Create new Exams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewExamsDTO"
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamsDTO"
+  /api/v1/exams/{id}:
+    get:
+      tags:
+        - Exams
+      operationId: "getExams"
+      parameters:
+        - name: id
+          in: path
+          description: Exams ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamsDTO"
+        "404":
+          description: No Exams with the specified id
+    put:
+      tags:
+        - Exams
+      operationId: "putExams"
+      description: Update a Exams with the specified id
+      parameters:
+        - name: id
+          in: path
+          description: Exams ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewExamsDTO"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamsDTO"
+        "404":
+          description: No Exams with the specified id
+    delete:
+      tags:
+        - Exams
+      operationId: deleteExams
+      description: Delete a Exams with the specified id
+      parameters:
+        - name: id
+          in: path
+          description: Exams ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "204":
+          description: Success
+        "404":
+          description: No Exams with the specified id
+components:
+  schemas:
+    ExamsDTO:
+      type: object
+      required:
+        - id
+        - name
+        - description
+      properties:
+        id:
+          description: Exam ID
+          type: integer
+          format: int32
+          example: 100
+        name:
+          description: Exam name
+          type: string
+          example: "Exam 2022"
+        description:
+          description: Exam description
+          type: string
+          example: "New Exam in 2022"
+        From:
+          description: Exam start date/time
+          type: string
+          format: date-time
+          example: "2022-05-18T05:01:43+09:00"
+        to:
+          description: Exam end date/time
+          type: string
+          format: date-time
+          example: "2022-06-17T05:01:43+09:00"
+    NewExamsDTO:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          description: Exam name
+          type: string
+          example: "Exam 2022"
+        description:
+          description: Exam description
+          type: string
+          example: "New Exam in 2022"
+        From:
+          description: Exam start date/time
+          type: string
+          format: date-time
+          example: "2022-05-18T05:01:43+09:00"
+        to:
+          description: Exam end date/time
+          type: string
+          format: date-time
+          example: "2022-06-17T05:01:43+09:00"
+        pictureUri:
+          description: Exam banner image URL
+          type: string
+          example: "/images/banner1.png"
+        detailsUri:
+          description: Exam detail image URL
+          type: string
+          example: "/images/detail1.png"

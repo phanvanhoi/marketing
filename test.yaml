@@ -1,0 +1,162 @@
+openapi: 3.0.1
+info:
+  title: Emarket - Marketing HTTP API
+  description: The Marketing Service HTTP API
+  version: v1
+servers:
+  - url: /marketing-api
+paths:
+  /api/v1/exams:
+    get:
+      tags:
+        - exams
+      operationId: "getExamsList"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExamsDTO"
+    post:
+      tags:
+        - exams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewExamsDTO"
+      responses:
+        "201":
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamsDTO"
+        "400":
+          description: Invalid ID Exams
+        "404":
+          description: Exams not found
+
+  /api/v1/exams/{id}:
+    get:
+      tags:
+        - exams
+      operationId: "getExamsById"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewExamsDTO"
+        "400":
+          description: Error
+    put:
+      tags:
+        - exams
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewExamsDTO"
+      responses:
+        "200":
+          description: Successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamsDTO"
+        "404":
+          description: Invalid updated ID
+    delete:
+      tags:
+        - exams
+      summary: Delete user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: Successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamsDTO"
+        "404":
+          description: Invalid updated id
+
+components:
+  schemas:
+    ExamsDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 662023
+        name:
+          type: string
+          nullable: true
+        From:
+          type: string
+          format: date
+          example: "2023-01-06"
+          nullable: true
+        to:
+          type: string
+          format: date
+          example: "2018-06-06"
+          nullable: true
+    NewExamsDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 762023
+        name:
+          type: string
+          example: "new Exams in 2023"
+          nullable: true
+          description: "name of Exams"
+        From:
+          type: string
+          format: date-time
+          example: "2023-06-07T08:00:00Z"
+          description: "Exams start time"
+        to:
+          type: string
+          format: date-time
+          example: "2017-06-07T23:59:59Z"
+          description: "Exams end time"
+        pictureUri:
+          type: string
+          format: string
+          example: "/images/banner1.png"
+          nullable: true
+        detailsUri:
+          type: string
+          format: string
+          example: "/images/detail1.png"
+          nullable: true
